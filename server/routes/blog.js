@@ -3,20 +3,21 @@ import AuthController from "../controllers/authController.js";
 import BlogController from "../controllers/blogController.js";
 import CategoryController from "../controllers/categoryController.js";
 
+import checkIsUserAuthenticate from "../middlewares/authMiddleware.js";
 
 // Multer setup
 import multer from "multer";
 // set the destination and name of the file
 const storage = multer.diskStorage({
-    destination : (req, file, cb)=>{
+    destination: (req, file, cb) => {
         cb(null, `public/upload/`);
     },
-    filename : (req, file, cb) =>{
-        cb(null,`${Date.now()}-${file.originalname}`);
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
     }
 })
 // Set into the json
-const upload = multer({storage : storage});
+const upload = multer({ storage: storage });
 
 const router = express.Router();
 
@@ -27,14 +28,14 @@ router.post("/user/login", AuthController.userLogin);
 
 // Protected routes
 // for blogs
-router.get("/get/allblogs", BlogController.getAllBlogs);
-router.post("/add/blog",upload.single("thumbnail") ,BlogController.addNewBlog);
-router.get("/get/blog/:id", BlogController.getSingleBlog);
+router.get("/get/allblogs", checkIsUserAuthenticate, BlogController.getAllBlogs);
+router.post("/add/blog", upload.single("thumbnail"), checkIsUserAuthenticate, BlogController.addNewBlog);
+router.get("/get/blog/:id", checkIsUserAuthenticate, BlogController.getSingleBlog);
 
 
 // for category
-router.get("/get/categories", CategoryController.getAllCategories);
-router.post("/add/category", CategoryController.addNewCategory);
+router.get("/get/categories", checkIsUserAuthenticate, CategoryController.getAllCategories);
+router.post("/add/category", checkIsUserAuthenticate, CategoryController.addNewCategory);
 
 
 
