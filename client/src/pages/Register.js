@@ -5,17 +5,21 @@ import { useNavigate } from 'react-router-dom';
 
 function Register() {
     const navigate = useNavigate();
+    // structure of storing the data from the form
     const [input, setInput] = useState({
         username : "",
         email : "",
         password : ""
     });
 
+    // submit function
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            // send the form data to the backend side
             const res = await axios.post("http://localhost:5050/api/v1/user/register",input);
             alert(res.data.message);
+            // navigate to the log-in page
             navigate("/login");
         } catch (error) {
             alert(error.response.data.message);

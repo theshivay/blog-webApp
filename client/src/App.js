@@ -11,13 +11,14 @@ import Protected from './Services/Protected.js'
 
 function App() {
   return (
-    <div className='bg-dark bg-gradient vh-100'>
+    <div className='bg-dark bg-gradient min-vh-100'>
     <Header/>
     <Routes>
       <Route path='/login'element = {<Login/>} />
       <Route path='/register'element = {<Register/>} />
-      
+
       {/* Protected Routes */}
+      {/* these routes are work when user is log-in */}
       <Route path='/' element = {<Protected/>}>
         <Route path='/'element = {<Home/>} />
         <Route path='/add-category'element = {<AddCategory/>} />

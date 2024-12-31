@@ -3,12 +3,15 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 
 function AddBlog() {
+    // structure of the blog
     const [input, setInput] = useState({
         title : "",
         description : "",
         category : "",
     })
+    // storing the file data
     const [file, setFile] = useState([]);
+    // storing the categoring for the select option
     const [categories,setCategories] = useState([]);
     const navigate = useNavigate();
 
@@ -20,27 +23,32 @@ function AddBlog() {
                     "Authorization" : `Bearer ${localStorage.getItem("token")}`
                 }
             });
+            // store all the categories
             setCategories(res.data);
         }
         fetchAllCategory();
     },[]);
     
-    // Creating a form data
+    // Creating a form data with title, category, description, and file
     const formData = new FormData();
     formData.append("title", input.title)
     formData.append("category", input.category)
     formData.append("description", input.description)
     formData.append("thumbnail", file)
     
+    // submit functionality
     const handleSubmit = async (e) =>{
         e.preventDefault();
         try {
+            // send the data to the backend side from the form
             const res = await axios.post("http://localhost:5050/api/v1/add/blog",formData,{
+                // check the authorize user or not
                 headers : {
                     "Authorization" : `Bearer ${localStorage.getItem("token")}`
                 }
             })
             alert(res.data.message);
+            // navigate to the home page
             navigate("/");
         } catch (error) {
             alert(error.response.data.message);
@@ -74,6 +82,7 @@ function AddBlog() {
                                 <select name="category" className='form-control border-3 border-black'
                                     onChange={(e) => setInput({...input, [e.target.name] : e.target.value})}>
                                     <option className='text-black' disabled>Select Category</option>
+                                    {/* check the condition for categories, created or not */}
                                     {categories && categories.map((item) =>{
                                         return <option value={item._id}>{item.title}</option>
                                     })}

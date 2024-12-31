@@ -4,18 +4,23 @@ import { useNavigate } from 'react-router-dom';
 
 function AddCategory() {
     const navigate = useNavigate();
+    // structure of storing the data from the form
     const [input, setInput] = useState({
         title : "",
     });
+    // submit functionality
     const handleCategory = async (e) =>{
         e.preventDefault();
         try {
+            // send the data of form to the backend side
             const res = await axios.post("http://localhost:5050/api/v1/add/category",input,{
+                // header check the authorized user or not
                 headers : {
                     "Authorization" : `Bearer ${localStorage.getItem("token")}`,
                 }
             });
             alert(res.data.message);
+            // navigate to the home page
             navigate("/");
         } catch (error) {
             alert(error.response.data.message);

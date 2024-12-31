@@ -7,13 +7,19 @@ import { Link, useNavigate } from 'react-router-dom';
 
 function Header() {
     const navigate = useNavigate();
+    // get the token from the localstorage
     const token = localStorage.getItem("token");
+    // get the user name from the local storage
     const username = localStorage.getItem("username");
 
+    // log-out functionality
     const handleLogout =  () =>{
+        // remove the token from the local storage
         localStorage.removeItem("token");
+        // remove the username from the localstorage
         localStorage.removeItem("username");
         alert("Log-Out Successfully......");
+        // navigate to log-in page
         navigate("/login");
     }
   return (
@@ -33,6 +39,7 @@ function Header() {
             </Link>
           </Nav>
           <div className='div-inline d-flex gap-3 mx-auto my-2 my-lg-0' gap={2}>
+            {/* Condition to when the log-in and sign-up button will be shown or username shown */}
             {token && token !== null ? 
             <>
             <Button variant="light">

@@ -3,14 +3,18 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 function Home() {
+    // contain all blogs
     const [blogs, setBlogs] = useState([]);
+    
     useEffect(() => {
+        // fetch all the blogs from the database
         const fetchAllBlogs = async () => {
             const res = await axios.get("http://localhost:5050/api/v1/get/allblogs", {
                 headers: {
                     "Authorization": `Bearer ${localStorage.getItem("token")}`,
                 }
             });
+            // add the blogs to Blogs's variable
             setBlogs(res.data);
         }
         fetchAllBlogs();
@@ -24,6 +28,7 @@ function Home() {
                             <strong>Latest posts</strong>
                         </h2>
                         <div className='row'>
+                            {/* conditon when to showing the blogs */}
                             {blogs && blogs.length > 0 ? (
                                 blogs.map((item) => {
                                     return (

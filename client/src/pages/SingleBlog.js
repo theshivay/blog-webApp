@@ -4,16 +4,20 @@ import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
 function SingleBlog() {
+    // store the id 
     const {id} = useParams();
+    // store the single blog
     const [blog,setBlog] = useState({});
 
     useEffect(()=>{
+        // fetch the single blog from the database
         const fetchSingleBlog = async() =>{
             const res = await axios.get(`http://localhost:5050/api/v1/get/blog/${id}`,{
                 headers: {
                     "Authorization": `Bearer ${localStorage.getItem("token")}`,
                 }
             })
+            // store the single blog into it
             setBlog(res.data);
         };
         fetchSingleBlog();
