@@ -16,6 +16,7 @@ app.get("/", (req, res)=>{
 app.use(cors());
 app.use(express.json());
 
+app.use(express.static("public/upload"));
 
 
 // Listening port

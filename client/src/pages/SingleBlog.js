@@ -1,7 +1,23 @@
-import React from 'react';
+import axios from 'axios';
+import React,{useState,useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 function SingleBlog() {
+    const {id} = useParams();
+    const [blog,setBlog] = useState({});
+
+    useEffect(()=>{
+        const fetchSingleBlog = async() =>{
+            const res = await axios.get(`http://localhost:5050/api/v1/get/blog/${id}`,{
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                }
+            })
+            setBlog(res.data);
+        };
+        fetchSingleBlog();
+    },[id])
 
     const navigate = useNavigate();
     return (
@@ -9,14 +25,14 @@ function SingleBlog() {
             <div className='container shadow-lg my-3 '>
                 <div className=' col-md-12 d-flex align-items-center justify-content-center bg-light'>
                     <div className='row'>
-                        <h5 className='card-title my-3'>Demo</h5>
+                        <h5 className='card-title my-3'>{blog.title}</h5>
                         <p className='card-text my-3'>Published Date: </p>
                         <img 
-                            src={`https://www.shutterstock.com/shutterstock/photos/2134647139/display_1500/stock-vector-demo-demonstration-of-a-product-or-technique-text-concept-message-bubble-2134647139.jpg`}
+                            src={`http://localhost:5050/${blog.thumbnail}`}
                             alt='img'
                             className='img img-responsive img-rounded my-3'
                         />
-                        <p className='my-3'>Description</p>
+                        <p className='my-3'>{blog.description}</p>
                     </div>
                 </div>
                 <button onClick={()=> navigate("/")} className='btn btn-primary'>
